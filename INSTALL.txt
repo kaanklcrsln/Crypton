@@ -1,0 +1,29 @@
+CRYPTON — INSTALLATION
+
+1. Drag Crypton.app onto the Applications folder shown in this window.
+
+2. FIRST LAUNCH (important)
+   This build is signed ad-hoc, not with an Apple Developer ID, so macOS
+   Gatekeeper will block a normal double-click the first time.
+
+   To open it:
+     Right-click Crypton.app  ->  Open  ->  Open
+
+   You only need to do this once.
+
+   If macOS still refuses, run this in Terminal:
+     xattr -dr com.apple.quarantine /Applications/Crypton.app
+
+3. OPTIONAL — command line tool
+   To use Crypton from Terminal:
+     sudo ln -sf /Applications/Crypton.app/Contents/Resources/crypton /usr/local/bin/crypton
+
+   Then:
+     crypton list
+     crypton protect ~/Projects/MyProject
+     crypton unlock MyProject
+     crypton lock MyProject
+
+WARNING
+   If you forget a vault password, its contents cannot be recovered.
+   There is no backdoor and no reset.
