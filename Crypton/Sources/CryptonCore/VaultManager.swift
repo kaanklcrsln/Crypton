@@ -123,17 +123,19 @@ public final class VaultManager: @unchecked Sendable {
                 mountPoint: nil,
                 password: password
             )
-            // Compare like with like: count only the entries copyContents transfers.
-            let copiedCount = try fm.contentsOfDirectory(atPath: verifyMount)
-                .filter { !Self.skippedNames.contains($0) }
-                .count
-            let originalCount = try fm.contentsOfDirectory(atPath: source)
-                .filter { !Self.skippedNames.contains($0) }
-                .count
+            // Compare the actual names, not just counts, so a mismatch says which
+            // item is missing instead of reporting an opaque number.
+            let copied = Set(try fm.contentsOfDirectory(atPath: verifyMount)
+                .filter { !Self.skippedNames.contains($0) })
+            let expected = Set(try fm.contentsOfDirectory(atPath: source)
+                .filter { !Self.skippedNames.contains($0) })
             try DiskImage.detach(mountPoint: verifyMount)
 
-            guard copiedCount >= originalCount else {
-                throw CryptonError.copyFailed("Verification found \(copiedCount) of \(originalCount) items.")
+            let missing = expected.subtracting(copied)
+            guard missing.isEmpty else {
+                let names = missing.sorted().prefix(3).joined(separator: ", ")
+                let suffix = missing.count > 3 ? " and \(missing.count - 3) more" : ""
+                throw CryptonError.copyFailed("These items did not transfer: \(names)\(suffix).")
             }
 
             progress?("Removing the plaintext folder…")
