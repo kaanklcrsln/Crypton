@@ -11,7 +11,7 @@ A cold wallet doesn't sync, doesn't phone home, and doesn't ask you to trust a
 service. It holds one thing and holds it properly. Crypton takes the same
 position with folders.
 
-Most encryption tools drift toward being platforms — accounts, sync, sharing,
+Most encryption tools drift toward being platforms: accounts, sync, sharing,
 recovery portals, subscriptions. Every one of those is another party who can be
 breached, another server that can go down, another way your data leaves the
 machine you put it on.
@@ -97,30 +97,8 @@ Worth knowing before you rely on it:
   the point, but it cuts both ways.
 - Turn on **FileVault** as well, so swap is encrypted too.
 
-The full picture — including what Crypton deliberately does *not* defend
-against — is in [THREAT_MODEL.md](Documentation/THREAT_MODEL.md).
 
 ## Build from source
 
 Requires macOS 13+ and Swift 6 (Xcode Command Line Tools are enough).
 
-```sh
-./build.sh   # → build/Crypton.app and build/Crypton.dmg
-./test.sh    # 55 tests against real encrypted vaults
-```
-
-The tests create real vaults, write real files, corrupt real ciphertext, and
-check that plaintext never appears inside a container. They aren't mocks.
-
-## Docs
-
-| | |
-|---|---|
-| [ARCHITECTURE.md](Documentation/ARCHITECTURE.md) | Design and why disk images over EndpointSecurity |
-| [SECURITY.md](Documentation/SECURITY.md) | Measures taken, and known weak points |
-| [THREAT_MODEL.md](Documentation/THREAT_MODEL.md) | What it protects against, and what it doesn't |
-| [VAULT_FORMAT.md](Documentation/VAULT_FORMAT.md) | Container format, key hierarchy, manual recovery |
-
-## License
-
-MIT
